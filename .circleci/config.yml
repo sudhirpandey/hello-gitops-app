@@ -4,22 +4,6 @@ orbs:
   docker: circleci/docker@0.5.13
 
 jobs:
-  build-image:
-    machine: true
-    steps:
-      - checkout
-      - docker/build:
-          image: ooocamel/hello-gitops
-
-  build-push-image:
-    machine: true
-    steps:
-      - checkout
-      - docker/build:
-          image: ooocamel/hello-gitops
-      - docker/push:
-          image: ooocamel/hello-gitops
-
   render-push-manifest:
     machine: true
     steps:
@@ -54,19 +38,10 @@ workflows:
   version: 2
   ci:
     jobs:
-      - build-image:
-          filters:
-            branches:
-              ignore:
-                - master
-      - build-push-image:
-          filters:
-            branches:
-              only:
-                - master
-      - render-push-manifest:
-          requires:
-            - build-push-image
+      - docker/publish:
+          dockerfile: Dockerfile
+          image: ooocamel/hello-gitops
+          path: .
           filters:
             branches:
               only:
