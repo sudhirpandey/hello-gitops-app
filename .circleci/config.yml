@@ -8,13 +8,15 @@ jobs:
     machine: true
     steps:
       - checkout
-      - docker/build
+      - docker/build:
+          image: ooocamel/hello-gitops
 
   build-push-image:
     machine: true
     steps:
       - checkout
-      - docker/build
+      - docker/build:
+          image: ooocamel/hello-gitops
       - docker/push:
           image: ooocamel/hello-gitops
 
