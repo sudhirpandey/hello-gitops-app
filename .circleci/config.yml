@@ -26,7 +26,7 @@ jobs:
       - run:
           name: clone hello-gitops-env repo
           command: |
-            git clone -b master https://github.com/ptux/hello-gitops-env.git ~/hello-gitops-env
+            git clone -b master git@github.com:ptux/hello-gitops-env.git ~/hello-gitops-env
             cd ~/hello-gitops-env
             git config user.name "circleCI"
             git config user.email "circleCI@example.com"
