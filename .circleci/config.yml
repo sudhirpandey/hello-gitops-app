@@ -7,6 +7,10 @@ jobs:
   render-push-manifest:
     machine: true
     steps:
+      - add_ssh_keys:
+          fingerprints:
+              - "3f:86:2e:c7:22:37:eb:d4:fb:87:db:70:9e:e4:7a:44"
+
       - run:
           name: install kustomize
           command: |
@@ -18,6 +22,7 @@ jobs:
               xargs curl -O -L
             sudo mv kustomize_*_${opsys}_amd64 /usr/local/bin/kustomize
             sudo chmod u+x /usr/local/bin/kustomize
+
       - run:
           name: clone hello-gitops-env repo
           command: |
