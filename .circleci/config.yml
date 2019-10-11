@@ -3,10 +3,73 @@ version: 2.1
 orbs:
   docker: circleci/docker@0.5.13
 
-workflows:
-  build-and-publish-docker-image:
-    jobs:
+jobs:
+  build-image:
+    machine: true
+    steps:
+      - checkout
+      - docker/publish:
+          dockerfile: Dockerfile
+          deploy: false
+
+  build-push-image:
+    machine: true
+    steps:
+    steps:
+      - checkout
       - docker/publish:
           dockerfile: Dockerfile
           image: ooocamel/hello-gitops
           path: .
+
+  render-push-manifest:
+    machine: true
+    steps:
+      - run:
+          name: install kustomize
+          command: |
+            opsys=linux
+            curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest |\
+              grep browser_download |\
+              grep $opsys |\
+              cut -d '"' -f 4 |\
+              xargs curl -O -L
+            sudo mv kustomize_*_${opsys}_amd64 /usr/local/bin/kustomize
+            sudo chmod u+x /usr/local/bin/kustomize
+      - run:
+          name: clone hello-gitops-env repo
+          command: |
+            git clone -b master https://github.com/ptux/hello-gitops-env.git ~/hello-gitops-env
+            cd ~/hello-gitops-env
+            git config user.name "circleCI"
+            git config user.email "circleCI@example.com"
+      - run:
+          name: update image in hello-gitops-env repo
+          command: |
+            cd ~/hello-gitops-env/base
+            kustomize edit set image hello-gitops-app=docker.io/ooocamel/hello-gitops:$CIRCLE_SHA1
+            git add .
+            git commit -m "image tag is $CIRCLE_SHA1"
+            git push
+
+workflows:
+  version: 2
+  ci:
+    jobs:
+      - build-image:
+          filters:
+            branches:
+              ignore:
+                - master
+      - build-push-image:
+          filters:
+            branches:
+              only:
+                - master
+      - render-push-manifest:
+          requires:
+            - build-push-image
+          filters:
+            branches:
+              only:
+                - master
