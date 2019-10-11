@@ -15,7 +15,6 @@ jobs:
   build-push-image:
     machine: true
     steps:
-    steps:
       - checkout
       - docker/publish:
           dockerfile: Dockerfile
