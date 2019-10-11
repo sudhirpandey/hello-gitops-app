@@ -8,18 +8,15 @@ jobs:
     machine: true
     steps:
       - checkout
-      - docker/publish:
-          dockerfile: Dockerfile
-          deploy: false
+      - docker/build
 
   build-push-image:
     machine: true
     steps:
       - checkout
-      - docker/publish:
-          dockerfile: Dockerfile
+      - docker/build
+      - docker/push:
           image: ooocamel/hello-gitops
-          path: .
 
   render-push-manifest:
     machine: true
