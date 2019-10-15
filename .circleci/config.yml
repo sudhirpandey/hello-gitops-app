@@ -34,7 +34,7 @@ jobs:
           name: update image in hello-gitops-env repo
           command: |
             cd ~/hello-gitops-env/base
-            kustomize edit set image hello-gitops-app=docker.io/$DOCKER_LOGIN/hello-gitops:$CIRCLE_SHA1
+            kustomize edit set image hello-gitops=docker.io/$DOCKER_LOGIN/hello-gitops:$CIRCLE_SHA1
             git add .
             git commit -m "image tag is $CIRCLE_SHA1"
             git push
