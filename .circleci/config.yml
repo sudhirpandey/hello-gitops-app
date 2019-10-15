@@ -64,4 +64,4 @@ workflows:
                 - master
       - render-push-manifest:
           requires:
-            - docker/publish
+            - build-publish
