@@ -46,6 +46,15 @@ workflows:
       - docker/publish:
           dockerfile: Dockerfile
           image: $DOCKER_LOGIN/hello-gitops
+          publish: false
+          path: .
+          filters:
+            branches:
+              ignore:
+                - master
+      - docker/publish:
+          dockerfile: Dockerfile
+          image: $DOCKER_LOGIN/hello-gitops
           path: .
           filters:
             branches:
