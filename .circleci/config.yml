@@ -44,15 +44,17 @@ workflows:
   ci:
     jobs:
       - docker/publish:
+          name: build-only
           dockerfile: Dockerfile
           image: $DOCKER_LOGIN/hello-gitops
-          publish: false
+          deploy: false
           path: .
           filters:
             branches:
               ignore:
                 - master
       - docker/publish:
+          name: build-publish
           dockerfile: Dockerfile
           image: $DOCKER_LOGIN/hello-gitops
           path: .
