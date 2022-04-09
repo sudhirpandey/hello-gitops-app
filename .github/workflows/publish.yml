@@ -1,9 +1,9 @@
 name: publish
 
 on: 
- - push:
-    branches:
-    - master
+ push:
+  branches:
+  - master
 
 jobs:
   publish-hello-world-image:
