@@ -2,6 +2,8 @@ name: publish
 
 on: [push]
 
+runs-on: self-hosted
+
 jobs:
   publish-hello-world-image:
     runs-on: ubuntu-latest
