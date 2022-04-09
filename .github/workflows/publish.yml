@@ -1,8 +1,9 @@
 name: publish
 
-on: [push]
-
-runs-on: self-hosted
+on: 
+ - push:
+    branches:
+    - master
 
 jobs:
   publish-hello-world-image:
